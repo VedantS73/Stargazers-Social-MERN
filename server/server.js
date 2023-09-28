@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const userRoutes = require('./routes/api/usersRoutes')
-// const postRoutes = require('./routes/api/postRoutes')
+const postRoutes = require('./routes/api/postRoutes')
 
 const app = express();
 const PORT = process.env.PORT || 3001
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/api/users',userRoutes)
-// app.use('/api/posts',postRoutes)
+app.use('/api/posts',postRoutes)
 const authenticateToken = require('./middlewares/authenticateToken')
 
 const mongoose = require('mongoose');
