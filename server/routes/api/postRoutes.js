@@ -18,14 +18,26 @@ router.get("/getposts", async (req, res) => {
 
 router.post("/createpost", async (req, res) => {
   try {
-    const { headline, content, imageUrl, username } = req.body;
+    const { headline, content, username, imageUrl } = req.body;
+
+    let type = "s";
+    if (imageUrl === ""){
+      type = "s";
+    }
+    else {
+      type = "l";
+    }
+    console.log(`username is : ${username}`);
 
     const newPost = new Post({
       headline,
       content,
       imageUrl,
       username,
+      type,
     });
+
+    console.log(newPost);
 
     const savedPost = await newPost.save();
 

@@ -5,14 +5,14 @@ import { makeStyles } from '@mui/styles';
 const useStyle = makeStyles({
 
     headline: {
-        fontSize:"1.5rem",
+        fontSize:"1.2rem",
         lineHeight: 'normal',
-        fontWeight: '700'
+        fontWeight: '600'
     },
     dateNtime: {
         fontSize: '0.9375rem',
         lineHeight: 'normal',
-        color: '#A1A1AA',
+        // color: '#A1A1AA',
         fontWeight: '700'
     },
     username: {
@@ -45,13 +45,14 @@ export default function Cards(props) {
         <div>
             <Card
                 sx={{
-                    maxHeigh:"400px",
-                    maxWidth:"fit-content",
-                    background: '#121416',
+                    minHeight:"250px",
+                    // maxWidth:"fit-content",
+                    width:"100%",
+                    // height:"100%",
                     borderRadius: '5px',
-                    color: 'white',
                     padding: '20px',
-                    margin: '0.9rem',
+                    // margin: '0.9rem',
+                    overflowY: 'hidden',
                 }}
             >
                 <Stack spacing={4}>

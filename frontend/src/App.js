@@ -17,16 +17,6 @@ class App extends Component {
         <Router>
           <div className="App">
             {/* <ResponsiveDrawer /> */}
-            {/* <Routes>
-              <Route exact path="/" element={<Explore/>}/>
-              <Route exact path="/explore" element={<ResponsiveDrawer/>}/>
-              <Route exact path="/connect" element={<Connect/>}/>
-              <Route exact path="/events" element={<Events/>}/>
-              <Route exact path="/learn" element={<Learn/>}/>
-              <Route exact path="/sky" element={<Sky/>}/>
-              <Route exact path="/login" element={<Login />}></Route>
-              <Route exact path="/register" element={<Register />}></Route>
-            </Routes> */}
             <Routes>
               <Route exact path="/" element={<ResponsiveDrawer maincontent={<Explore />} />}></Route>
               <Route exact path="/explore" element={<ResponsiveDrawer maincontent={<Explore />} />}></Route>

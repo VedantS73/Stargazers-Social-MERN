@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import ResponsiveAppBar from '../Components/ResponsiveAppBar';
+import Chat from "../Components/Chat";
+import FixedBottomNavigation from '../Components/FixedBottomNavigation';
 
 function getStoredToken() {
   return localStorage.getItem("jwtToken");
@@ -10,6 +11,7 @@ export default function Connect() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const token = getStoredToken();
+  console.log(`The jwtToken detected was : ${token}`);
   const [username, setUsername] = useState('');
 
   useEffect(() => {
@@ -31,8 +33,8 @@ export default function Connect() {
 
   return (
     <div style={{ width: '100%' }}>
-      <ResponsiveAppBar />
-      {/* <Chat /> */}
+      <FixedBottomNavigation />
+      <Chat />
     </div>
   )
 }

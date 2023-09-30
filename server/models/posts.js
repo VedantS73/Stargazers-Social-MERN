@@ -10,7 +10,7 @@ const PostSchema = new schema({
     type: String,
     required: true,
   },
-  imageUrl: String, // You can make this field optional
+  imageUrl: String,
   username: {
     type: String,
     required: true,
@@ -22,6 +22,10 @@ const PostSchema = new schema({
   likes: {
     type: Number,
     default: 0,
+  },
+  type: {
+    type: String,
+    default: "s",
   },
 });
 

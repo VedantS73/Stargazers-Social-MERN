@@ -34,8 +34,9 @@
 //     overflowY: 'auto'
 //   }
 // });
-
-// const Chat = () => {
+import ResponsiveDrawer from "../Components/ResponsiveDrawer";
+const Chat = () => {
+    <ResponsiveDrawer />
 //   const classes = useStyles();
 
 //   return (
@@ -128,6 +129,6 @@
 //         </Grid>
 //       </div>
 //   );
-// }
+}
 
-// export default Chat;
+export default Chat;

@@ -37,6 +37,7 @@ app.get('/' ,(req, res) => {
 
 app.get('/userapi', authenticateToken, async (req, res) => {
     try {
+      console.log("hello");
       const user = await User.findById(req.user.id);
       if (!user) return res.status(404).json({ message: 'User not found' });
       res.json(user);

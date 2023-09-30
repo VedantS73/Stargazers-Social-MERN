@@ -1,89 +1,172 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // You may need to install axios if not already installed
+import React, { useState } from "react";
+import axios from "axios";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import SendIcon from "@mui/icons-material/Send";
 
 function CreatePost() {
-    const [formData, setFormData] = useState({
-      headline: '',
-      content: '',
-      imageUrl: '',
-      username: '',
-    });
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({ ...formData, [name]: value });
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      try {
-        // Send a POST request to your server endpoint
-        await axios.post('http://localhost:3001/api/posts/createpost', formData);
-  
-        // Optionally, you can clear the form fields here
-        setFormData({
-          headline: '',
-          content: '',
-          imageUrl: '',
-          username: '',
-        });
-  
-        // Handle success or redirect as needed
-        // For example, you can display a success message or redirect to the post list page
-      } catch (error) {
-        console.error(error);
-        // Handle errors, display an error message, or redirect to an error page
-      }
-    };
-  
-    return (
-      <div>
-        <h2>Make a Post</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="headline">Headline:</label>
-          <input
-            type="text"
-            id="headline"
+  const [formData, setFormData] = useState({
+    headline: "",
+    content: "",
+    imageUrl: "",
+    username: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/posts/createpost",
+        formData
+      );
+
+      console.log("Post created:", response.data);
+
+      setFormData({
+        headline: "",
+        content: "",
+        imageUrl: "",
+        username: "",
+      });
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
+  };
+
+  return (
+    <div style={{ maxHeight: "90%", overflowY: "auto", overflowX: "hidden"}}>
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1 },
+          // width: '36ch'
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <div>
+          <Typography variant="h6" gutterBottom>
+            New Post
+          </Typography>
+          <Card
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              minHeight: 200,
+              bgcolor: "action.hover",
+            }}
+          >
+            <CardContent
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+                textAlign: "center",
+              }}
+            >
+              <CloudUploadIcon sx={{ fontSize: 40 }} />
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Click or Drag to Upload
+              </Typography>
+            </CardContent>
+          </Card>
+        </div>
+        <div>
+          <TextField
+            id="outlined-basic"
+            label="Title"
+            multiline
+            maxRows={4}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            style={{ marginTop: "1.5rem" }}
+            sx={{ width: "97%" }}
             name="headline"
             value={formData.headline}
-            onChange={handleChange}
-            required
-          /><br /><br />
-  
-          <label htmlFor="content">Content:</label>
-          <textarea
-            id="content"
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <TextField
+            id="standard-multiline-static"
+            label="Post Content"
+            multiline
+            rows={4}
+            // variant="standard"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ width: "97%" }}
             name="content"
             value={formData.content}
-            onChange={handleChange}
-            required
-          ></textarea><br /><br />
-  
-          <label htmlFor="imageUrl">Image URL (optional):</label>
-          <input
-            type="text"
-            id="imageUrl"
-            name="imageUrl"
-            value={formData.imageUrl}
-            onChange={handleChange}
-          /><br /><br />
-  
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <TextField
+            id="outlined-basic"
+            label="Username"
+            multiline
+            maxRows={4}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ width: "97%" }}
+            size="small"
             name="username"
             value={formData.username}
-            onChange={handleChange}
-            required
-          /><br /><br />
-  
-          <button type="submit">Make a Post</button>
-        </form>
-      </div>
-    );
-  }
-  
-  export default CreatePost;
-  
+            onChange={handleInputChange}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Image URL (optional)"
+            multiline
+            maxRows={4}
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ width: "97%" }}
+            size="small"
+            name="imageUrl"
+            value={formData.imageUrl}
+            onChange={handleInputChange}
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          endIcon={<SendIcon />}
+          sx={{ width: "100%", marginTop: "1rem" }}
+        >
+          POST
+        </Button>
+      </Box>
+    </div>
+  );
+}
+
+export default CreatePost;

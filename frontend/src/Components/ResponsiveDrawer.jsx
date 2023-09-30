@@ -31,8 +31,6 @@ const drawerWidth = 240;
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function ResponsiveDrawer(props) {
-  console.log(props.maincontent);
-  console.log("meow");
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
