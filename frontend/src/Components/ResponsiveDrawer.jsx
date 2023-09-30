@@ -11,6 +11,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
@@ -20,11 +21,20 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import Explore from "../Pages/Explore";
 
 const drawerWidth = 240;
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function ResponsiveDrawer(props) {
-  // const navigate = useNavigate();
+  console.log(props.maincontent);
+  console.log("meow");
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
 
   const token = localStorage.getItem("jwtToken");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -42,16 +52,15 @@ function ResponsiveDrawer(props) {
   const handleCloseUserMenu = (setting) => {
     setAnchorElUser(null);
 
-    // if (setting === 'Profile') {
-    //   navigate('/profile');
-    // } else if (setting === 'About') {
-    //   navigate('/about');
-    // } else if (setting === 'About') {
-    //   navigate('/about');
-    // } else if (setting === 'Logout') {
-    //   localStorage.removeItem("jwtToken");
-    //   // window.location.reload();
-    // }
+    if (setting === 'Profile') {
+      // Navigate to the profile page if needed
+    } else if (setting === 'About') {
+      // Navigate to the about page if needed
+    } else if (setting === 'Logout') {
+      localStorage.removeItem("jwtToken");
+      // window.location.reload();
+      // Perform logout actions
+    }
   };
 
   const handleDrawerToggle = () => {
@@ -72,9 +81,25 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <Toolbar />
+      <div>
+      <ListItem disablePadding>
+      <ListItemButton>
+        <ListItemAvatar>
+          <Avatar alt="Logo" src="logo.png" />
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              StarConnect
+            </Typography>
+          }
+        />
+      </ListItemButton>
+    </ListItem>
+      </div>
       <Divider />
       <List>
-        {['Explore', 'Connect', 'Events', 'Drafts', 'Learn', 'Sky'].map((text, index) => (
+        {['Explore', 'Connect', 'Events', 'Learn', 'Sky'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
               component={Link}
@@ -122,7 +147,9 @@ function ResponsiveDrawer(props) {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
           </Box>
-
+          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="User settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -186,7 +213,46 @@ function ResponsiveDrawer(props) {
           {drawer}
         </Drawer>
       </Box>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
+        <Toolbar />
+        {/* <Explore /> */}
+        {props.maincontent}
+      </Box>
     </Box>
   );
 }
-export default ResponsiveDrawer;
+
+export default function ToggleColorMode(props) {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = React.useState('light');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          // mode: prefersDarkMode ? 'dark' : 'light',
+          mode,
+        },
+      }),
+    [mode],
+  );
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <ResponsiveDrawer maincontent={props.maincontent} />
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+  );
+}

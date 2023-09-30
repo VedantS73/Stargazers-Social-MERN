@@ -1,103 +1,10 @@
-// import React, { useState, useEffect } from 'react'
-// import { Typography, Button, Stack, Card, Avatar, dividerClasses, Grid, Drawer, } from '@mui/material';
-// import { makeStyles } from '@mui/styles';
-// import Cards from '../Components/Cards';
-// import BigCard from '../Components/Big-card';
-// import axios from 'axios';
-// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-// import LocationBox from '../Components/LocationBox'
-
-// const useStyles = makeStyles({
-//   heading: {
-//     fontSize: "32px",
-//     fontWeight: "600"
-//   },
-//   Buttons:
-//   {
-//     width: "157px",
-//     height: "51px",
-//     backgroundColor: "white",
-//   }
-
-// })
-
-// export default function Explore() {
-//   const classes = useStyles()
-//   const [postData, setPostData] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch data from the JSON endpoint using Axios
-//     axios.get('http://localhost:3004/posts')
-//       .then(response => {
-//         setPostData(response.data);
-//       })
-//       .catch(error => {
-//         console.error('Error fetching data:', error);
-//       });
-//   }, []); // Empty dependency array to ensure the effect runs only once
-
-//   return (
-//     <div>
-//       <Grid container sx={{
-//         padding: "2rem",
-//         gap: "2rem",
-//         alignItems: 'center',
-//         justifyContent: 'space-between',
-
-//       }}>
-//         <Grid item xl={5} lg={5} md={4} className={classes.heading} style={{ color: '#F9F9F9' }}>Explore</Grid>
-//         <Grid item xl={5} lg={5} md={4} >
-//           <LocationBox />
-//         </Grid>
-//       </Grid>
-//       <Grid
-//         container
-//         direction="colomn"
-//         sx={{
-//           gap: '2rem',
-//           alignItems: 'center', // Center vertically
-//           justifyContent: 'center',
-//           padding: "1rem",
-//         }}
-//       >
-
-//         {postData.map(post => (
-//           <div key={post.id}>
-//             {post.type === "l" ? (
-//               <Grid item xl={12} lg={12} md={12}>
-//                 <BigCard
-//                   date={post.date}
-//                   headline={post.header}
-//                   authorName="Alia Bhat"
-//                   content={post.content}
-//                 />
-//               </Grid>
-//             ) : (
-
-//               <Grid item xl={4} lg={4} md={4} sm={12}>
-//                 <Cards
-//                   date={post.date}
-//                   headline={post.header}
-//                   authorName="Alia Bhat"
-//                   info={post.content}
-//                 />
-//               </Grid>
-
-//             )}
-//           </div>
-//         ))}
-//       </Grid>
-//     </div>
-
-//   )
-// }
-
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Stack, Card, Avatar, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Cards from '../Components/Cards';
 import BigCard from '../Components/Big-card';
 import axios from 'axios';
+import CreatePost from '../Components/CreatePost';
 
 export default function Explore() {
   const [postData, setPostData] = useState([]);
@@ -105,7 +12,7 @@ export default function Explore() {
   useEffect(() => {
     // Fetch data from the JSON endpoint using Axios
     axios
-      .get('http://localhost:3004/posts')
+      .get('http://localhost:3001/api/posts/getposts')
       .then((response) => {
         setPostData(response.data);
       })
@@ -131,6 +38,9 @@ export default function Explore() {
   return (
     <div>
       <h1 style={{ color: 'white' }}>Explore</h1>
+      <Card>
+        <CreatePost />
+      </Card>
       <Grid
         container
         direction="row"
