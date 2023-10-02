@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import "../App.css";
@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Button from "@mui/material/Button";
-import { Link, UNSAFE_NavigationContext } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const darkTheme = createTheme({
   palette: {
@@ -16,10 +16,27 @@ const darkTheme = createTheme({
 });
 
 function Login() {
+  const navigate = useNavigate();
   const [username, SetUsername] = useState("");
   const [password, setPassword] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    // If login is successful, set a timer for the countdown
+    if (loginSuccess) {
+      const countdownInterval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+        if (countdown === 1) {
+          clearInterval(countdownInterval); // Clear the countdown interval
+          // Redirect to "/explore" after the countdown
+          navigate("/explore");
+        }
+      }, 1000); // Update countdown every 1 second
+      return () => clearInterval(countdownInterval); // Cleanup the interval on unmount
+    }
+  }, [loginSuccess, navigate, countdown]);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -131,7 +148,7 @@ function Login() {
           onClose={handleSnackbarClose}
           severity="success"
         >
-          Login Successful!
+          {`Login Successful! Redirecting in ${countdown} seconds...`}
         </MuiAlert>
       </Snackbar>
     </ThemeProvider>

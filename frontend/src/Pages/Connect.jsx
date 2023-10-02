@@ -33,7 +33,7 @@ export default function Connect() {
 
   return (
     <div style={{ width: '100%' }}>
-      <FixedBottomNavigation />
+      {/* <FixedBottomNavigation /> */}
       <Chat />
     </div>
   )

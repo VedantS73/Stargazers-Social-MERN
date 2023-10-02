@@ -51,6 +51,7 @@ const useStyle = makeStyles({
 });
 
 export default function BigCard(props) {
+  console.log(props.info);
   const classes = useStyle();
 
   const imagelink = props.imageUrl;
@@ -86,6 +87,7 @@ export default function BigCard(props) {
             alt="posted img"
             width="100%"
             height="100%"
+            object-fit='cover'
             sx={{}}
           />
         </Grid>

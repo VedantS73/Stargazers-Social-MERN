@@ -66,6 +66,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    try {
+      const { query } = req.query;
+  
+      const users = await User.find({ username: { $regex: new RegExp(query, 'i') } });
+  
+      res.json(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
 router.post('/adminverify', async (req, res) => {
     try {
         const admintoken = req.body.jwtToken;

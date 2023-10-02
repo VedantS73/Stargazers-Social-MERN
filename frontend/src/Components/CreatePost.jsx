@@ -3,6 +3,7 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { Link, useNavigate } from 'react-router-dom';
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -11,18 +12,23 @@ import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SendIcon from "@mui/icons-material/Send";
 
-function CreatePost() {
+function CreatePost(props) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     headline: "",
     content: "",
     imageUrl: "",
-    username: "",
+    username: props.usernamepass,
   });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const redirectlogin = () => {
+    navigate('/login');
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,6 +51,27 @@ function CreatePost() {
       console.error("Error creating post:", error);
     }
   };
+  console.log("user logged is :",props.username);
+  if (props.username === undefined) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "40vh",
+        }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Please login to continue
+        </Typography>
+        <Button variant="contained" onClick={redirectlogin}>
+          Login
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxHeight: "90%", overflowY: "auto", overflowX: "hidden"}}>
@@ -126,6 +153,7 @@ function CreatePost() {
         </div>
         <div>
           <TextField
+            disabled
             id="outlined-basic"
             label="Username"
             multiline

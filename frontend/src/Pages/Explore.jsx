@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Modal from '@mui/material/Modal';
 import CssBaseline from '@mui/material/CssBaseline';
+import CircularProgress from '@mui/material/CircularProgress';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
@@ -15,6 +16,13 @@ import axios from 'axios';
 import Cards from '../Components/Cards';
 import BigCard from '../Components/Big-card';
 import CreatePost from '../Components/CreatePost';
+
+const loaderstyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh', // Optional: This will make the container take up the full viewport height
+};
 
 const style = {
     position: 'absolute',
@@ -31,8 +39,11 @@ const style = {
   };
 
 export default function Explore() {
+    const token = localStorage.getItem("jwtToken");
     const [postData, setPostData] = useState([]);
     const [open, setOpen] = React.useState(false);
+    const [userData, setUserData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {setOpen(false); setValue(0);}
 
@@ -52,20 +63,47 @@ export default function Explore() {
         return rows;
       };
 
-    useEffect(() => {
+      useEffect(() => {
+        setIsLoading(true); // Set loading to true when starting data fetch
         axios
           .get('http://localhost:3001/api/posts/getposts')
           .then((response) => {
             setPostData(response.data);
+            setIsLoading(false); // Set loading to false when data is received
           })
           .catch((error) => {
             console.error('Error fetching data:', error);
+            setIsLoading(false); // Set loading to false on error as well
           });
+
+          if (token) {
+            fetch("http://localhost:3001/userapi", {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                setUserData(data);
+              })
+              .catch((error) => {
+                console.error("Fetch error:", error);
+              });
+          }
       }, []);
 
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
       <CssBaseline/>
+      {isLoading ? (
+        <div style={loaderstyle}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
         <Grid
             container
             direction="row"
@@ -134,9 +172,11 @@ export default function Explore() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-            <CreatePost />
+            <CreatePost usernamepass = {userData?.username || null}/>
         </Box>
       </Modal>
+      </>
+      )}
     </Box>
   );
 }

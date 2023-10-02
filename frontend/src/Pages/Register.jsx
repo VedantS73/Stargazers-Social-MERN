@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Typography from '@mui/material/Typography';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -24,8 +24,23 @@ const darkTheme = createTheme({
 
   
 function Register() {
+  const navigate = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    if (registerSuccess) {
+      const countdownInterval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+        if (countdown === 1) {
+          clearInterval(countdownInterval);
+          navigate("/explore");
+        }
+      }, 1000);
+      return () => clearInterval(countdownInterval);
+    }
+  }, [registerSuccess, navigate, countdown]);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -34,7 +49,6 @@ function Register() {
     setSnackbarOpen(false);
   };
 
-  const navigate = useNavigate();
   async function handleSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -146,7 +160,7 @@ function Register() {
           onClose={handleSnackbarClose}
           severity="success"
         >
-          User Registration Successful
+          {`User Registration Successful! Redirecting to login in ${countdown} seconds...`}
         </MuiAlert>
       </Snackbar>
     </ThemeProvider>

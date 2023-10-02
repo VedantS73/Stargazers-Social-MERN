@@ -13,6 +13,7 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, secretKey, (err, user) => {
     if (err) {
+      console.log("error is invalid tokennnnnnnnnnn");
       return res.sendStatus(403).json({ message: 'Invalid token' }); // Forbidden
     }
     req.user = user; // Attach user info to the request object

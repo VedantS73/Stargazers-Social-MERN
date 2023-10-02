@@ -34,7 +34,7 @@
 //     overflowY: 'auto'
 //   }
 // });
-import ResponsiveDrawer from "../Components/ResponsiveDrawer";
+import ResponsiveDrawer from "./DrawerLayout";
 const Chat = () => {
     <ResponsiveDrawer />
 //   const classes = useStyles();

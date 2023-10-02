@@ -5,3 +5,8 @@
   align-items: center;
   height: 100vh; /* Makes the container take the full height of the viewport */
 }
+
+.lottie-container {
+  width: 200px;
+  height: 200px;
+}

@@ -31,6 +31,7 @@ const drawerWidth = 240;
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function ResponsiveDrawer(props) {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
@@ -48,18 +49,25 @@ function ResponsiveDrawer(props) {
   };
 
   const handleCloseUserMenu = (setting) => {
+    // localStorage.removeItem("jwtToken");
     setAnchorElUser(null);
+  };
 
+  const handleCloseUserMenuSettings = (setting) => () => {
     if (setting === 'Profile') {
-      // Navigate to the profile page if needed
+      navigate('/profile');
+    } else if (setting === 'Login') {
+      navigate('/login');
     } else if (setting === 'About') {
-      // Navigate to the about page if needed
+      navigate('/about');
     } else if (setting === 'Logout') {
       localStorage.removeItem("jwtToken");
+      console.log("Logged out Successfully");
+      navigate('/login');
       // window.location.reload();
       // Perform logout actions
     }
-  };
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -171,7 +179,7 @@ function ResponsiveDrawer(props) {
               onClose={handleCloseUserMenu}
             >
               {userSettings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={handleCloseUserMenuSettings(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -225,7 +233,7 @@ function ResponsiveDrawer(props) {
 
 export default function ToggleColorMode(props) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [mode, setMode] = React.useState('light');
+  const [mode, setMode] = React.useState('dark');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
